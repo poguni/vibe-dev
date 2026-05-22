@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodge It - 기획서 분석 (Research Document)</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #f1c40f;
+            --success-color: #2ecc71;
+            --background-color: #f8f9fa;
+            --text-color: #333333;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            font-size: 1.5em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .important-box {
+            background-color: #ffeaea;
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        code {
+            background-color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+        
+        ol {
+            padding-left: 20px;
+        }
+        
+        ol > li {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dodge It - 기획서 분석 (Research Document)</h1>
+
+        <h2>1. 프로젝트 개요 (Overview)</h2>
+        <ul>
+            <li><strong>프로젝트명</strong>: 똥 피하기 게임 (Dodge It)</li>
+            <li><strong>목적</strong>: 초등학생(3~6학년)들이 국어, 사회, 과학, 영어 등의 과목을 디벗(크롬북) 환경에서 쉽고 재미있게 복습할 수 있도록 하는 웹 기반 교육용 게임 개발.</li>
+            <li><strong>핵심 가치</strong>: 단원 학습이 끝난 후 게임(똥 피하기)이라는 흥미로운 소재를 통해 핵심 용어와 개념을 거부감 없이 학습하고 복습 동기를 부여.</li>
+        </ul>
+
+        <h2>2. 핵심 기능 분석 (Core Features Analysis)</h2>
+
+        <h3>2.1 AI 기반 문제 생성 및 문제 관리</h3>
+        <ul>
+            <li><strong>Gemini 1.5 Flash 활용</strong>: 교사가 교과서 PDF를 업로드하면, 15년 차 초등학교 교사 페르소나를 가진 AI가 핵심 단답형 문제(1~30개)를 자동 생성. 속도와 비용 효율성이 높은 Flash 모델 채택은 적절한 선택임.</li>
+            <li><strong>문제 은행 시스템</strong>: AI가 생성하거나 교사가 엑셀로 업로드한 문제들이 '문제 은행 DB'에 누적 저장됨. 엑셀 다운로드 및 개별 삭제 기능을 통해 교사가 문제를 유연하게 관리할 수 있도록 설계.</li>
+        </ul>
+
+        <h3>2.2 간편 로그인 및 실시간 세션 생성 (Frictionless Login)</h3>
+        <ul>
+            <li><strong>교사용 기능</strong>: 게임 세션(방)을 생성하고 입장 코드(6자리 유니크 값)와 QR코드, URL 링크를 제공.</li>
+            <li><strong>학생용 기능</strong>: 별도의 회원가입 없이 교사가 제공한 수단을 통해 '번호와 이름'만 입력하면 즉시 접속 가능. 이는 학교 환경에서 학생들의 접속 병목을 최소화하는 매우 훌륭한 UX 전략임.</li>
+        </ul>
+
+        <h3>2.3 게임 플레이 메커니즘</h3>
+        <ul>
+            <li><strong>기본 구조</strong>: Phaser 3 기반의 2D 웹 게임. 16:9 비율 고정.</li>
+            <li><strong>초기 상태</strong>: 점수 1000점 부여, 생명(하트) 5개.</li>
+            <li><strong>조작</strong>: 화면 하단 캐릭터를 방향키(←, →)로 이동.</li>
+            <li><strong>게임 룰 및 점수 체계</strong>:
+                <ul>
+                    <li>정답 시: 바닥에 가장 가까운 똥 1개 제거 &amp; <span class="highlight">+100점</span>.</li>
+                    <li>똥이 바닥에 닿음: <span class="highlight">-50점</span> 감점.</li>
+                    <li>캐릭터가 똥에 맞음: 하트 1개 감소 &amp; <span class="highlight">-100점</span> 감점.</li>
+                    <li>똥 생성: 난이도에 따라 속도 차등, 한 화면 최대 5개 유지.</li>
+                </ul>
+            </li>
+            <li><strong>특수 이벤트</strong>: 10문제 단위로 이벤트 출제. 정답 시 랜덤 효과.
+                <ul>
+                    <li><strong>[변기 물 내리기]</strong>: 전체 똥 초기화, +500점, 물결 애니메이션 연출.</li>
+                    <li><strong>[변비]</strong>: 5초간 똥 투하 정지, 부르르 떨리는 진동 연출.</li>
+                </ul>
+            </li>
+            <li><strong>종료 조건</strong>: 모든 문제 소진(Success) 또는 점수 0점/하트 모두 소진(Game Over).</li>
+        </ul>
+
+        <h3>2.4 통계 데이터 및 리더보드</h3>
+        <ul>
+            <li><strong>교사 대시보드</strong>: 게임 횟수, 학급 평균 점수, 학생별 누적 성적 그래프 및 분석.</li>
+            <li><strong>학생 결과 화면</strong>: 단순한 표 형태를 벗어나 1~3위 캐릭터가 시상대(Podium)에 올라가는 시각적 연출을 추가하여 성취감 극대화.</li>
+        </ul>
+
+        <h2>3. UI/UX 및 디자인 전략 (UI/UX &amp; Design)</h2>
+        <ul>
+            <li><strong>시각적 스타일</strong>: '픽셀 아트(Pixel Art)' 또는 '두들(Doodle) 스타일'을 채택하여 복고풍의 친숙하고 귀여운 분위기 연출. 똥 오브젝트도 불쾌감을 주지 않는 이모지 스타일로 미화.</li>
+            <li><strong>컬러 팔레트</strong>: 활기찬 노란색(배경/포인트), 연두색(성취감/성공), 가독성을 위한 네이비/그레이 활용.</li>
+            <li><strong>반응형 고려</strong>: 문제 영역은 가독성을 위해 흰색 배경에 검은색 볼드체 적용. 크롬북 등 다양한 모니터에서도 잘리지 않게 16:9 고정 뷰포트 유지.</li>
+        </ul>
+
+        <h2>4. 기술 스택 및 아키텍처 검토 (Tech Stack Evaluation)</h2>
+        <ul>
+            <li><strong>Frontend</strong>: Next.js (애플리케이션 UI/라우팅) + Phaser 3 (게임 물리엔진, 충돌 및 애니메이션 처리). 웹 게임 개발의 표준적인 조합으로 퍼포먼스 확보에 유리.</li>
+            <li><strong>Backend / DB</strong>: Supabase (PostgreSQL). 관계형 DB 구성과 더불어 실시간(Real-time) 리더보드 및 접속 상태 관리를 위한 최적의 BaaS 선택.</li>
+            <li><strong>AI</strong>: Gemini 1.5 Flash (프롬프트 엔지니어링 및 PDF 텍스트 추출).</li>
+            <li><strong>배포</strong>: Vercel (Next.js 호환성이 가장 뛰어남).</li>
+        </ul>
+
+        <h2>5. 데이터베이스 설계 분석 (Database Schema)</h2>
+        <p>제공된 5가지 메인 테이블 구조는 기획의 핵심을 모두 커버함:</p>
+        <ol>
+            <li><code>users</code> (교사 정보)</li>
+            <li><code>problem_banks</code> (세트/단원 단위 문제 묶음)</li>
+            <li><code>problems</code> (개별 문제)</li>
+            <li><code>game_sessions</code> (진행/대기 중인 방 상태 정보)</li>
+            <li><code>game_results</code> (학생들의 성과 및 점수 기록)</li>
+        </ol>
+
+        <h2>6. 개발 시 고려사항 및 제언 (Risks &amp; Considerations)</h2>
+        <div class="important-box">
+            <strong>1. 사용자 입력 포커스(Focus) 분리 문제 (중요)</strong>
+            <p>게임이 진행되는 동안 방향키(캐릭터 이동)와 텍스트 입력창(정답 입력)이 동시에 사용되어야 합니다. 브라우저에서 텍스트 입력창에 커서가 있으면 방향키를 눌러도 캐릭터가 이동하지 않고 커서가 이동하는 문제가 발생할 수 있습니다.</p>
+            <p><strong>해결 방안</strong>: 전역 키보드 이벤트 리스너를 설정하여, 좌우 방향키(<code>ArrowLeft</code>, <code>ArrowRight</code>)는 게임의 조작으로만 동작하게 하고, 텍스트 입력 시에는 해당 방향키 입력이 무시되거나 입력창 내 커서 이동을 비활성화하는 등 세밀한 입력 제어가 필요합니다.</p>
+        </div>
+        
+        <ol start="2">
+            <li><strong>PDF 파싱의 한계성</strong>
+                <p>교과서 PDF 파일은 텍스트 인코딩이 깨져 있거나, 이미지 기반으로 스캔되어 있을 수 있습니다. Gemini AI에 PDF를 넘길 때 원활한 파싱을 위해서는 업로드 전 OCR 처리가 필요할 수도 있음에 유의해야 합니다.</p>
+            </li>
+            <li><strong>실시간 트래픽 처리 최적화</strong>
+                <p>30명 이상의 학생이 동시에 한 교사의 세션에서 문제를 풀고 똥을 피할 때, 점수 변동(리더보드)을 매 초마다 Supabase에 업데이트하면 부하가 생길 수 있습니다. Phaser 내에서 게임 중에는 로컬 상태를 유지하고, 일정한 주기(예: 3초)마다 혹은 점수 변동의 특정 스텝마다 상태를 묶어서 서버로 보내는(Batch Update) 최적화를 고려해야 합니다.</p>
+            </li>
+            <li><strong>문제 풀이의 템포 조절</strong>
+                <p>똥이 떨어지는 속도와 학생이 정답을 타이핑하는 데 걸리는 시간 간의 밸런스가 게임 난이도의 핵심입니다. 똥의 초기 높이와 낙하 속도를 조절하는 변수를 세밀하게 테스트할 수 있는 관리자(디버깅) 패널을 별도로 두는 것을 추천합니다.</p>
+            </li>
+        </ol>
+    </div>
+</body>
+</html>
